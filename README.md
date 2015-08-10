@@ -4,9 +4,9 @@ Extends hardcoded ID limits.
 
 [Download](https://github.com/fewizz/NotEnoughIDs/releases)
 
-[MinecraftForum Page](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/2467198-notenoughids-maximum-id-range-exceeded-no-more)
+[MCF Thread](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/2467198-notenoughids-maximum-id-range-exceeded-no-more)
 
-#Plans
+#ToDo
 - [ ] Increase ID limit for biomes
 - [ ] Increase ID limit for enchantments (?)
 - [ ] Increase ID limit for potions (?)
@@ -14,15 +14,16 @@ Extends hardcoded ID limits.
 - [ ] Compatibility for some incompatible mods
 
 #Modpacks
-Feel free to include this mod in your private or public modpack if you are link back to [this page](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/2467198-notenoughids-maximum-id-range-exceeded-no-more).
+Feel free to include this mod in your private or public modpack (provided you link back to either this page or [the forum thread here](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/2467198-notenoughids-maximum-id-range-exceeded-no-more).
 
-#Compatibility (Read with attention!)
-- Incompatible with old worlds!!! (Due to massive id range change it is impossible to make old worlds compatible with this mod)
-- Compatible with Optifine
-- Incompatible with Fastcraft
-- Possibly incompatible with some other mods
+#Compatibility (Please read!)
+**Compatible mods**
+- Optifine
+
+**Incompatible mods (please report any more!)**
+- Fastcraft (currently being resolved)
+- Report any additional incompatibilities in the issues section!!
 
 #Credits
-immibis for [MinecraftForkage code](https://github.com/MinecraftForkage/MinecraftForkage)
-
-VikeStep and GloomyFolken for their coremod tutorials
+- immibis for [MinecraftForkage code](https://github.com/MinecraftForkage/MinecraftForkage)
+- VikeStep and GloomyFolken for their coremod tutorials
