@@ -1,6 +1,6 @@
 [
 	{
-    "modid": "notenoughIDs",
+    "modid": "neid",
     "name": "NotEnoughIDs",
     "description": "Extends hardcoded block ID limit.",
     "version": "${version}",

@@ -1,4 +1,4 @@
-package ru.fewizz.idextender.asm;
+package ru.fewizz.neid.asm;
 
 import java.io.PrintWriter;
 import java.util.ListIterator;
@@ -16,78 +16,21 @@ import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceMethodVisitor;
 
 public class AsmUtil {
+
 	public static MethodNode findMethod(ClassNode cn, String name) {
-		return findMethod(cn, name, false);
+		return findMethod(cn, name, null, null);
 	}
-
-	public static MethodNode findMethod(ClassNode cn, String name, boolean optional) {
-		for (MethodNode ret : cn.methods) {
-			if (ret.name.equals(name))
-				return ret;
+	
+	public static MethodNode findMethod(ClassNode cn, String name, String nameObf, String descObf) {
+		for(MethodNode mn : cn.methods) {
+			if(mn.name.equals(name) || (nameObf != null && mn.name.equals(nameObf) && mn.desc.equals(descObf))) {
+				return mn;
+			}
 		}
-
-		if (optional) {
-			return null;
-		}
-		else {
-			throw new MethodNotFoundException(name);
-		}
+		
+		return null;
 	}
-
-	public static MethodNode findMethod(ClassNode cn, Name name) {
-		return findMethod(cn, name, false);
-	}
-
-	public static MethodNode findMethod(ClassNode cn, Name name, boolean optional) {
-		for (MethodNode ret : cn.methods) {
-			if (name.matches(ret))
-				return ret;
-		}
-
-		if (optional) {
-			return null;
-		}
-		else {
-			throw new MethodNotFoundException(name.deobf);
-		}
-	}
-
-	public static FieldNode findField(ClassNode cn, String name) {
-		return findField(cn, name, false);
-	}
-
-	public static FieldNode findField(ClassNode cn, String name, boolean optional) {
-		for (FieldNode ret : cn.fields) {
-			if (name.equals(ret.name))
-				return ret;
-		}
-
-		if (optional) {
-			return null;
-		}
-		else {
-			throw new FieldNotFoundException(name);
-		}
-	}
-
-	public static FieldNode findField(ClassNode cn, Name name) {
-		return findField(cn, name, false);
-	}
-
-	public static FieldNode findField(ClassNode cn, Name name, boolean optional) {
-		for (FieldNode ret : cn.fields) {
-			if (name.matches(ret))
-				return ret;
-		}
-
-		if (optional) {
-			return null;
-		}
-		else {
-			throw new FieldNotFoundException(name.deobf);
-		}
-	}
-
+	
 	public static void makePublic(MethodNode x) {
 		x.access = (x.access & ~(Opcodes.ACC_PRIVATE | Opcodes.ACC_PROTECTED)) | Opcodes.ACC_PUBLIC;
 	}
@@ -178,7 +121,12 @@ public class AsmUtil {
 			
 		}
 
-		if (!foundOnce && !optional) throw new AsmTransformException("can't find constant value "+oldValue+" in method "+method.name);
+		if (!foundOnce && !optional)
+			try {
+				throw new Exception("can't find constant value "+oldValue+" in method "+method.name);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 		return foundOnce;
 	}

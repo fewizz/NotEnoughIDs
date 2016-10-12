@@ -1,68 +1,82 @@
+
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
+		maven {
+            name = 'gradle-plugins'
+            url = 'https://plugins.gradle.org/m2'
+        }
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+		maven {
+            name = 'sponge'
+            url = 'http://repo.spongepowered.org/maven'
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+		classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
     }
 }
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'org.spongepowered.mixin'
 
-apply plugin: 'forge'
-
-version = "1.4.3.4"
+version = "1.5.0"
 archivesBaseName = "NotEnoughIDs"
 
+sourceCompatibility = targetCompatibility = "1.6"
+
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.6"
+}
+
 minecraft {
-    version = "1.7.10-10.13.4.1566-1.7.10"
-    runDir = "eclipse"
+    version = "1.10.2-12.18.1.2076"
+    runDir = "run"
+    
+    mappings = "snapshot_20160908"
 }
 
-jar {
-    manifest {
-		attributes 'FMLCorePlugin': 'ru.fewizz.idextender.IEPlugin'
-		attributes 'FMLCorePluginContainsFMLMod': 'true'
-    }
-	exclude "net/**"
-	exclude "exterminatorJeff/**"
-}
-
-ext.jarFile = zipTree(jar.archivePath)
-
-task deobf(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'deobf'
-}
-
-artifacts {
-    archives deobf
+configurations {
+	shade
 }
 
 dependencies {
+	//compile 'org.spongepowered:mixin:0.5.13-SNAPSHOT'
+	shade files('libs/mixin-0.5.13-20160909.011448-2.jar')
 }
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
+jar {
+	manifest {
+		attributes (
+			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+			'TweakOrder': '0',
+			'MixinConfigs': 'mixins.neid.json',
+			'FMLCorePlugin': 'ru.fewizz.neid.asm.Plugin',
+			'ForceLoadAsMod': 'true',
+			'FMLCorePluginContainsFMLMod': 'true',
+			'FMLAT': 'neid_at.cfg'
+		)
+    }
+	
+	configurations.shade.each { dep ->
+        from(project.zipTree(dep)){
+            exclude 'META-INF', 'META-INF/**'
+        }
+    }
+}
+
+processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
-        // replace version and mcversion
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
         
-    // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
