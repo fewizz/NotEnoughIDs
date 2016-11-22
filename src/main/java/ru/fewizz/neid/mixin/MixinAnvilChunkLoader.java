@@ -3,6 +3,7 @@ package ru.fewizz.neid.mixin;
 import java.util.List;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -23,6 +24,7 @@ import ru.fewizz.neid.interfaces.IBlockStateContainer;
 public abstract class MixinAnvilChunkLoader implements IAnvilChunkLoader {
 
 	@Override
+	@Overwrite
 	public void writeChunkToNBT(Chunk chunkIn, World worldIn, NBTTagCompound compound) {
 		compound.setInteger("xPos", chunkIn.xPosition);
 		compound.setInteger("zPos", chunkIn.zPosition);
@@ -41,7 +43,7 @@ public abstract class MixinAnvilChunkLoader implements IAnvilChunkLoader {
 				nbttagcompound.setByte("Y", (byte) (extendedblockstorage.getYLocation() >> 4 & 255));
 				byte[] abyte = new byte[4096];
 				NibbleArray nibblearray = new NibbleArray();
-				NibbleArray[] nibbles = ((IBlockStateContainer)extendedblockstorage.getData()).getDataForNBT2(abyte, nibblearray);
+				NibbleArray[] nibbles = ((IBlockStateContainer) extendedblockstorage.getData()).getDataForNBT2(abyte, nibblearray);
 				NibbleArray nibblearray1 = nibbles[0];
 				NibbleArray nib2 = nibbles[1]; // NEID
 				nbttagcompound.setByteArray("Blocks", abyte);
@@ -50,7 +52,7 @@ public abstract class MixinAnvilChunkLoader implements IAnvilChunkLoader {
 				if (nibblearray1 != null) {
 					nbttagcompound.setByteArray("Add", nibblearray1.getData());
 				}
-				if(nib2 != null) {
+				if (nib2 != null) {
 					nbttagcompound.setByteArray("Add2", nib2.getData());
 				}
 
@@ -122,52 +124,48 @@ public abstract class MixinAnvilChunkLoader implements IAnvilChunkLoader {
 		}
 
 	}
-	
+
 	@Override
-	public Chunk readChunkFromNBT(World worldIn, NBTTagCompound compound)
-    {
-        int i = compound.getInteger("xPos");
-        int j = compound.getInteger("zPos");
-        Chunk chunk = new Chunk(worldIn, i, j);
-        chunk.setHeightMap(compound.getIntArray("HeightMap"));
-        chunk.setTerrainPopulated(compound.getBoolean("TerrainPopulated"));
-        chunk.setLightPopulated(compound.getBoolean("LightPopulated"));
-        chunk.setInhabitedTime(compound.getLong("InhabitedTime"));
-        NBTTagList nbttaglist = compound.getTagList("Sections", 10);
-        int k = 16;
-        ExtendedBlockStorage[] aextendedblockstorage = new ExtendedBlockStorage[16];
-        boolean flag = !worldIn.provider.getHasNoSky();
+	@Overwrite
+	public Chunk readChunkFromNBT(World worldIn, NBTTagCompound compound) {
+		int i = compound.getInteger("xPos");
+		int j = compound.getInteger("zPos");
+		Chunk chunk = new Chunk(worldIn, i, j);
+		chunk.setHeightMap(compound.getIntArray("HeightMap"));
+		chunk.setTerrainPopulated(compound.getBoolean("TerrainPopulated"));
+		chunk.setLightPopulated(compound.getBoolean("LightPopulated"));
+		chunk.setInhabitedTime(compound.getLong("InhabitedTime"));
+		NBTTagList nbttaglist = compound.getTagList("Sections", 10);
+		int k = 16;
+		ExtendedBlockStorage[] aextendedblockstorage = new ExtendedBlockStorage[16];
+		boolean flag = !worldIn.provider.getHasNoSky();
 
-        for (int l = 0; l < nbttaglist.tagCount(); ++l)
-        {
-            NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(l);
-            int i1 = nbttagcompound.getByte("Y");
-            ExtendedBlockStorage extendedblockstorage = new ExtendedBlockStorage(i1 << 4, flag);
-            byte[] abyte = nbttagcompound.getByteArray("Blocks");
-            NibbleArray nibblearray = new NibbleArray(nbttagcompound.getByteArray("Data"));
-            NibbleArray nibblearray1 = nbttagcompound.hasKey("Add", 7) ? new NibbleArray(nbttagcompound.getByteArray("Add")) : null;
-            NibbleArray nib2 = nbttagcompound.hasKey("Add2", 7) ? new NibbleArray(nbttagcompound.getByteArray("Add2")) : null;
-            ((IBlockStateContainer)extendedblockstorage.getData()).setDataFromNBT2(abyte, nibblearray, nibblearray1, nib2);
-            extendedblockstorage.setBlocklightArray(new NibbleArray(nbttagcompound.getByteArray("BlockLight")));
+		for (int l = 0; l < nbttaglist.tagCount(); ++l) {
+			NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(l);
+			int i1 = nbttagcompound.getByte("Y");
+			ExtendedBlockStorage extendedblockstorage = new ExtendedBlockStorage(i1 << 4, flag);
+			byte[] abyte = nbttagcompound.getByteArray("Blocks");
+			NibbleArray nibblearray = new NibbleArray(nbttagcompound.getByteArray("Data"));
+			NibbleArray nibblearray1 = nbttagcompound.hasKey("Add", 7) ? new NibbleArray(nbttagcompound.getByteArray("Add")) : null;
+			NibbleArray nib2 = nbttagcompound.hasKey("Add2", 7) ? new NibbleArray(nbttagcompound.getByteArray("Add2")) : null;
+			((IBlockStateContainer) extendedblockstorage.getData()).setDataFromNBT2(abyte, nibblearray, nibblearray1, nib2);
+			extendedblockstorage.setBlocklightArray(new NibbleArray(nbttagcompound.getByteArray("BlockLight")));
 
-            if (flag)
-            {
-                extendedblockstorage.setSkylightArray(new NibbleArray(nbttagcompound.getByteArray("SkyLight")));
-            }
+			if (flag) {
+				extendedblockstorage.setSkylightArray(new NibbleArray(nbttagcompound.getByteArray("SkyLight")));
+			}
 
-            extendedblockstorage.removeInvalidBlocks();
-            aextendedblockstorage[i1] = extendedblockstorage;
-        }
+			extendedblockstorage.removeInvalidBlocks();
+			aextendedblockstorage[i1] = extendedblockstorage;
+		}
 
-        chunk.setStorageArrays(aextendedblockstorage);
+		chunk.setStorageArrays(aextendedblockstorage);
 
-        if (compound.hasKey("Biomes", 7))
-        {
-            chunk.setBiomeArray(compound.getByteArray("Biomes"));
-        }
+		if (compound.hasKey("Biomes", 7)) {
+			chunk.setBiomeArray(compound.getByteArray("Biomes"));
+		}
 
-        // End this method here and split off entity loading to another method
-        return chunk;
-    }
+		return chunk;
+	}
 
 }

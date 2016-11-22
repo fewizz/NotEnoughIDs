@@ -36,14 +36,23 @@ public abstract class MixinBlockStateContainer implements IBlockStatePaletteResi
 		NibbleArray add2 = null;
 
 		for (int block = 0; block < 4096; ++block) {
-			int id = Block.BLOCK_STATE_IDS.get(this.get(block));
-			int x = block & 15;
-			int y = block >> 8 & 15;
-			int z = block >> 4 & 15;
-
-			int in1 = id >> 12 & 15;
-			int in2 = id >> 16 & 15;
+			IBlockState s = this.get(block);
 			
+			int x = block & 0xF;
+			int y = (block >> 8) & 0xF;
+			int z = (block >> 4) & 0xF;
+			
+			if(s == AIR_BLOCK_STATE) {
+				ids[block] = 0;
+				metaNib.set(x, y, z, 0);
+				continue;
+			}
+			
+			int id = Block.BLOCK_STATE_IDS.get(s);
+
+			int in1 = (id >> 12) & 0xF;
+			int in2 = (id >> 16) & 0xF;
+
 			if (in1 != 0) {
 				if (add == null) {
 					add = new NibbleArray();
@@ -59,30 +68,30 @@ public abstract class MixinBlockStateContainer implements IBlockStatePaletteResi
 				add2.set(x, y, z, in2);
 			}
 
-			ids[block] = (byte) (id >> 4 & 255);
-			metaNib.set(x, y, z, id & 15);
+			ids[block] = (byte) ((id >> 4) & 0xFF);
+			metaNib.set(x, y, z, id & 0xF);
 		}
 
-		return new NibbleArray[] {add, add2};
+		return new NibbleArray[] { add, add2 };
 	}
-	
-	public void setDataFromNBT2(byte[] ids, NibbleArray meta, @Nullable NibbleArray add1, @Nullable NibbleArray add2)
-    {
-        for (int block = 0; block < 4096; ++block)
-        {
-            int x = block & 15;
-            int y = block >> 8 & 15;
-            int z = block >> 4 & 15;
-            int toAdd = add1 == null ? 0 : add1.get(x, y, z);
-            toAdd = add2 == null ? toAdd : (toAdd) & 0xFF | (add2.get(x, y, z) << 4);
-            int id = toAdd << 12 | (ids[block] & 255) << 4 | meta.get(x, y, z);
-            this.set(block, (IBlockState)Block.BLOCK_STATE_IDS.getByValue(id));
-        }
-    }
+
+	public void setDataFromNBT2(byte[] ids, NibbleArray meta, @Nullable NibbleArray add1, @Nullable NibbleArray add2) {
+		for (int block = 0; block < 4096; ++block) {
+			int x = block & 0xF;
+			int y = (block >> 8) & 0xF;
+			int z = (block >> 4) & 0xF;
+			int toAdd = add1 == null ? 0 : add1.get(x, y, z);
+			if(add2 != null) {
+				toAdd = (toAdd & 0xF) | (add2.get(x, y, z) << 4);
+			}
+			int id = (toAdd << 12) | ((ids[block] & 0xFF) << 4) | meta.get(x, y, z);
+			this.set(block, id == 0 ? AIR_BLOCK_STATE : (IBlockState) Block.BLOCK_STATE_IDS.getByValue(id));
+		}
+	}
 
 	@Shadow
 	abstract IBlockState get(int i);
-	
+
 	@Shadow
 	abstract void set(int id, IBlockState state);
 }

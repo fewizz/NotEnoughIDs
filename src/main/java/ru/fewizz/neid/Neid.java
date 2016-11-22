@@ -32,6 +32,7 @@ public class Neid
         for(int i = 0; i < 6000; i++) {
         	BlockIce block = new BlockIce();
         	block.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+        	block.setUnlocalizedName("" + i);
         	GameRegistry.register(block, new ResourceLocation("neid:ICE" + i));
         	GameRegistry.register(new ItemBlock(block), new ResourceLocation("neid:ICE" + i));
         }
