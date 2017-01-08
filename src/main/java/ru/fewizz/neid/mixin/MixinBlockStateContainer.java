@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BitArray;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.chunk.BlockStateContainer;
@@ -31,7 +32,8 @@ public abstract class MixinBlockStateContainer implements IBlockStatePaletteResi
 	NibbleArray b16;
 
 	@Nullable
-	public NibbleArray[] getDataForNBT2(byte[] ids, NibbleArray metaNib) {
+	@Override
+	public NibbleArray getDataForNBT2(NBTTagCompound nbt, byte[] ids, NibbleArray metaNib) {
 		NibbleArray add = null;
 		NibbleArray add2 = null;
 
@@ -72,10 +74,17 @@ public abstract class MixinBlockStateContainer implements IBlockStatePaletteResi
 			metaNib.set(x, y, z, id & 0xF);
 		}
 
-		return new NibbleArray[] { add, add2 };
+		if(add2 != null) {
+			nbt.setByteArray("Add2", add2.getData());
+		}
+		
+		return add;
 	}
 
-	public void setDataFromNBT2(byte[] ids, NibbleArray meta, @Nullable NibbleArray add1, @Nullable NibbleArray add2) {
+	@Override
+	public void setDataFromNBT2(NBTTagCompound nbt, byte[] ids, NibbleArray meta, @Nullable NibbleArray add1) {
+		NibbleArray add2 = nbt.hasKey("Add2", 7) ? new NibbleArray(nbt.getByteArray("Add2")) : null;
+		
 		for (int block = 0; block < 4096; ++block) {
 			int x = block & 0xF;
 			int y = (block >> 8) & 0xF;

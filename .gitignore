@@ -15,4 +15,3 @@ otherclasses/
 !/eclipse/mods/
 *.classpath
 *.project
-*.launch

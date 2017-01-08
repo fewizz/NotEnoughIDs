@@ -23,7 +23,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 
-version = "1.5.0"
+version = "1.5.1"
 archivesBaseName = "NotEnoughIDs"
 
 sourceCompatibility = targetCompatibility = "1.6"
@@ -44,15 +44,14 @@ configurations {
 }
 
 dependencies {
-	//compile 'org.spongepowered:mixin:0.5.13-SNAPSHOT'
-	shade files('libs/mixin-0.5.13-20160909.011448-2.jar')
+	shade files('libs/mixin-0.6-20161122.161024-5.jar')
 }
 
 jar {
 	manifest {
 		attributes (
 			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-			'TweakOrder': '0',
+			'TweakOrder': '100',
 			'MixinConfigs': 'mixins.neid.json',
 			'FMLCorePlugin': 'ru.fewizz.neid.asm.Plugin',
 			'ForceLoadAsMod': 'true',

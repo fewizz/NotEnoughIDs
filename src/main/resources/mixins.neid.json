@@ -4,7 +4,6 @@
 	"target": "@env(DEFAULT)",
 	"mixins": [
 		"MixinBlockStateContainer",
-		"MixinAnvilChunkLoader",
 		"MixinChunkPrimer"
 	]
 }

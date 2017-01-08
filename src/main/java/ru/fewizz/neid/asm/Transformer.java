@@ -1,7 +1,14 @@
 package ru.fewizz.neid.asm;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -12,84 +19,68 @@ import org.objectweb.asm.tree.IntInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import net.minecraft.launchwrapper.IClassTransformer;
+import ru.fewizz.neid.asm.group.TransformerGroupAnvilChunkLoader;
+import ru.fewizz.neid.asm.group.TransformerGroupHardcoredConstants;
 
 public class Transformer implements IClassTransformer {
-	ClassNode cn;
-	ClassReader reader;
-	ClassWriter writer;
+	public static final Logger LOGGER = LogManager.getLogger("neid");
+	public static boolean envDeobfuscated;
+	private ClassNode cn;
+	private ClassReader cr;
+	private ClassWriter cw;
+	private List<TransformerGroup> groups;
+	private Map<TransformerGroup, Name[]> namesToTransform;
 
+	public Transformer() {
+		groups = new ArrayList<TransformerGroup>();
+		namesToTransform = new HashMap<TransformerGroup, Name[]>();
+		
+		addTransformerGroup(new TransformerGroupHardcoredConstants());
+		addTransformerGroup(new TransformerGroupAnvilChunkLoader());
+	}
+	
+	private void addTransformerGroup(TransformerGroup group) {
+		groups.add(group);
+		namesToTransform.put(group, group.getRequiredClasses());
+	}
+	
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] bytes) {
-		if (transformedName.equals("net.minecraftforge.fml.common.registry.GameData")) {
-			start(bytes, transformedName);
+		
+		boolean transformed = false;
+		
+		for(Entry<TransformerGroup, Name[]> entry : namesToTransform.entrySet()) {
 			
-			MethodNode mn = AsmUtil.findMethod(cn, "<init>");
-			AsmUtil.transformInlinedSizeMethod(cn, mn, 4095, 65535);
-
-			end();
-			return writer.toByteArray();
+			for(Name clazz : entry.getValue()) {
+				if(clazz.deobfDotted.equals(transformedName)) {
+					if(!transformed) {
+						transformed = true;
+						start(bytes, transformedName);
+					}
+					
+					entry.getKey().transform(cn, clazz, bytes);
+				}
+			}
 		}
 		
-		if (transformedName.equals("net.minecraft.stats.StatList")) {
-			start(bytes, transformedName);
-			
-			MethodNode mn = AsmUtil.findMethod(cn, "<clinit>");
-			AsmUtil.transformInlinedSizeMethod(cn, mn, 4096, 65536);
-			
+		if(transformed) {
 			end();
-			return writer.toByteArray();
-		}
-		
-		if(transformedName.equals("net.minecraft.client.renderer.RenderGlobal")) {
-			start(bytes, transformedName);
-			
-			MethodNode mn = AsmUtil.findMethod(cn, "playEvent", "a", "(Lzs;ILcm;I)V");
-			AsmUtil.transformInlinedSizeMethod(cn, mn, 12, 16);
-			
-			end();
-			return writer.toByteArray();
-		}
-		
-		if(transformedName.equals("net.minecraft.block.Block")) {
-			start(bytes, transformedName);
-			
-			MethodNode mn = AsmUtil.findMethod(cn, "getStateId", "j", "(Lars;)I");
-			AsmUtil.transformInlinedSizeMethod(cn, mn, 12, 16);
-			
-			mn = AsmUtil.findMethod(cn, "getStateById", "c", "(I)Lars;");
-			AsmUtil.transformInlinedSizeMethod(cn, mn, 4095, 0xFFFF);
-			AsmUtil.transformInlinedSizeMethod(cn, mn, 12, 16);
-			
-			end();
-			return writer.toByteArray();
-		}
-		
-		if(transformedName.equals("net.minecraft.network.play.server.SPacketBlockAction")) {
-			start(bytes, transformedName);
-			
-			MethodNode mn = AsmUtil.findMethod(cn, "readPacketData", "a", "(Leq;)V");
-			AsmUtil.transformInlinedSizeMethod(cn, mn, 4095, 0xFFFF);
-			
-			mn = AsmUtil.findMethod(cn, "writePacketData", "b", "(Leq;)V");
-			AsmUtil.transformInlinedSizeMethod(cn, mn, 4095, 0xFFFF);
-			
-			end();
-			return writer.toByteArray();
+			return cw.toByteArray();
 		}
 
 		return bytes;
 	}
 	
 	void start(byte[] bytes, String name) {
-		System.out.println("PATCHING: " + name);
+		LOGGER.info("PATCHING: " + name);
 		cn = new ClassNode(Opcodes.ASM5);
-		reader = new ClassReader(bytes);
-		reader.accept(cn, 0);
+		cr = new ClassReader(bytes);
+		cr.accept(cn, 0);
 	}
 	
 	void end() {
-		writer = new ClassWriter(0);
-		cn.accept(writer);
+		cw = new ClassWriter(0);
+		cn.accept(cw);
 	}
 
 }
