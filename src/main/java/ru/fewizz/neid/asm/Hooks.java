@@ -43,9 +43,12 @@ public class Hooks {
 	
 	public static int chunkPrimer_findGroundBlockIdx(ChunkPrimer cp, int x, int z) {
 		int i = (x << 12 | z << 8) + 256 - 1;
+		
+		char[] data = cp.data;
+		byte[] add = chunkPrimer_getAdditionalData(cp);
 
 		for (int j = 255; j >= 0; --j) {
-			IBlockState iblockstate = (IBlockState) Block.BLOCK_STATE_IDS.getByValue(cp.data[i + j] | (chunkPrimer_getAdditionalData(cp)[i + j] << 16));
+			IBlockState iblockstate = (IBlockState) Block.BLOCK_STATE_IDS.getByValue(data[i + j] | (add[i + j] << 16));
 
 			if (iblockstate != null && iblockstate != AIR_BLOCK_STATE) {
 				return j;
@@ -62,13 +65,13 @@ public class Hooks {
 		for (int block = 0; block < 4096; ++block) {
 			IBlockState s = ebs.getData().get(block);
 			
-			int x = block & 0xF;
-			int y = (block >> 8) & 0xF;
-			int z = (block >> 4) & 0xF;
+			//int x = block & 0xF;
+			//int y = (block >> 8) & 0xF;
+			//int z = (block >> 4) & 0xF;
 			
 			if(s == AIR_BLOCK_STATE) {
 				ids[block] = 0;
-				metaNib.set(x, y, z, 0);
+				metaNib.setIndex(block, 0);
 				continue;
 			}
 			
@@ -82,18 +85,18 @@ public class Hooks {
 					add = new NibbleArray();
 				}
 
-				add.set(x, y, z, in1);
+				add.setIndex(block, in1);
 			}
 			if (in2 != 0) {
 				if (add2 == null) {
 					add2 = new NibbleArray();
 				}
 
-				add2.set(x, y, z, in2);
+				add2.setIndex(block, in2);
 			}
 
 			ids[block] = (byte) ((id >> 4) & 0xFF);
-			metaNib.set(x, y, z, id & 0xF);
+			metaNib.setIndex(block, id & 0xF);
 		}
 
 		if(add2 != null) {
@@ -107,14 +110,14 @@ public class Hooks {
 		NibbleArray add2 = nbt.hasKey("Add2", 7) ? new NibbleArray(nbt.getByteArray("Add2")) : null;
 		
 		for (int block = 0; block < 4096; ++block) {
-			int x = block & 0xF;
-			int y = (block >> 8) & 0xF;
-			int z = (block >> 4) & 0xF;
-			int toAdd = add1 == null ? 0 : add1.get(x, y, z);
+			//int x = block & 0xF;
+			//int y = (block >> 8) & 0xF;
+			//int z = (block >> 4) & 0xF;
+			int toAdd = add1 == null ? 0 : add1.getFromIndex(block);
 			if(add2 != null) {
-				toAdd = (toAdd & 0xF) | (add2.get(x, y, z) << 4);
+				toAdd = (toAdd & 0xF) | (add2.getFromIndex(block) << 4);
 			}
-			int id = (toAdd << 12) | ((ids[block] & 0xFF) << 4) | meta.get(x, y, z);
+			int id = (toAdd << 12) | ((ids[block] & 0xFF) << 4) | meta.getFromIndex(block);
 			ebs.getData().set(block, id == 0 ? AIR_BLOCK_STATE : (IBlockState) Block.BLOCK_STATE_IDS.getByValue(id));
 		}
 	}
