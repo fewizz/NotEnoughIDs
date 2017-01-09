@@ -8,84 +8,83 @@ import org.objectweb.asm.tree.MethodNode;
 
 public enum Name {
 	// vanilla
-	acl("net/minecraft/world/chunk/storage/AnvilChunkLoader", "atj"),
-	chunk("net/minecraft/world/chunk/Chunk", "asv"),
-	world("net/minecraft/world/World", "aid"),
-	nbtTagCompound("net/minecraft/nbt/NBTTagCompound", "dr"),
-	ebs("net/minecraft/world/chunk/storage/ExtendedBlockStorage", "asw"),
-	bsc("net/minecraft/world/chunk/BlockStateContainer", "aso"),
-	nibbleArray("net/minecraft/world/chunk/NibbleArray", "asr"),
-	block("net/minecraft/block/Block", "akf"),
-	iBlockState("net/minecraft/block/state/IBlockState", "ars"),
-	renderGlobal("net/minecraft/client/renderer/RenderGlobal", "boh"),
-	entityPlayer("net/minecraft/entity/player/EntityPlayer", "zs"),
-	blockPos("net/minecraft/util/math/BlockPos", "cm"),
-	packet("net/minecraft/network/Packet", "fj"),
-	packetBlockAction("net/minecraft/network/play/server/SPacketBlockAction", "fx"),
-	packetBuffer("net/minecraft/network/PacketBuffer", "eq"),
-	statList("net/minecraft/stats/StatList", "nw"),
-	
-	// self
-	iBlockStateContainer("ru/fewizz/neid/interfaces/IBlockStateContainer"),
-	
+	acl("net/minecraft/world/chunk/storage/AnvilChunkLoader"),
+	chunk("net/minecraft/world/chunk/Chunk"),
+	chunkPrimer("net/minecraft/world/chunk/ChunkPrimer"),
+	world("net/minecraft/world/World"),
+	nbtTagCompound("net/minecraft/nbt/NBTTagCompound"),
+	ebs("net/minecraft/world/chunk/storage/ExtendedBlockStorage"),
+	bsc("net/minecraft/world/chunk/BlockStateContainer"),
+	nibbleArray("net/minecraft/world/chunk/NibbleArray"),
+	block("net/minecraft/block/Block"),
+	iBlockState("net/minecraft/block/state/IBlockState"),
+	renderGlobal("net/minecraft/client/renderer/RenderGlobal"),
+	entityPlayer("net/minecraft/entity/player/EntityPlayer"),
+	blockPos("net/minecraft/util/math/BlockPos"),
+	packet("net/minecraft/network/Packet"),
+	packetBlockAction("net/minecraft/network/play/server/SPacketBlockAction"),
+	packetBuffer("net/minecraft/network/PacketBuffer"),
+	statList("net/minecraft/stats/StatList"),
+	hooks("ru/fewizz/neid/asm/Hooks"),
 	fmlGameData("net/minecraftforge/fml/common/registry/GameData"),
-	
-	// methods
-	acl_writeChunkToNBT(acl, "writeChunkToNBT", "a", "func_75820_a", "(Lnet/minecraft/world/chunk/Chunk;Lnet/minecraft/world/World;Lnet/minecraft/nbt/NBTTagCompound;)V"),
-	acl_readChunkFromNBT(acl, "readChunkFromNBT", "a", "func_75823_a", "(Lnet/minecraft/world/World;Lnet/minecraft/nbt/NBTTagCompound;)Lnet/minecraft/world/chunk/Chunk;"),
-	ebs_getData(ebs, "getData", "g", "func_186049_g", "()Lnet/minecraft/world/chunk/BlockStateContainer;"),
-	bsc_getDataForNBT(bsc, "getDataForNBT", "a", "func_186017_a", "([BLnet/minecraft/world/chunk/NibbleArray;)Lnet/minecraft/world/chunk/NibbleArray;"),
-	bsc_setDataFromNBT(bsc, "setDataFromNBT", "a", "func_186019_a", "([BLnet/minecraft/world/chunk/NibbleArray;Lnet/minecraft/world/chunk/NibbleArray;)V"),
-	block_getStateId(block, "getStateId", "j", "func_176210_f", "(Lnet/minecraft/block/state/IBlockState;)I"),
-	block_getStateById(block, "getStateById", "c", "func_176220_d", "(I)Lnet/minecraft/block/state/IBlockState;"),
-	renderGlobal_playEvent(renderGlobal, "playEvent", "a", "func_180439_a", "(Lnet/minecraft/entity/player/EntityPlayer;ILnet/minecraft/util/math/BlockPos;I)V"),
-	packet_readPacketData(packet, "readPacketData", "a", "func_148837_a", "(Lnet/minecraft/network/PacketBuffer;)V"),
-	packet_writePacketData(packet, "writePacketData", "b", "func_148840_b", "(Lnet/minecraft/network/PacketBuffer;)V"),
-	
-	iBlockStateContainer_getDataForNBT2(iBlockStateContainer, "getDataForNBT2", null, null, "(Lnet/minecraft/nbt/NBTTagCompound;[BLnet/minecraft/world/chunk/NibbleArray;)Lnet/minecraft/world/chunk/NibbleArray;"),
-	iBlockStateContainer_setDataFromNBT2(iBlockStateContainer, "setDataFromNBT2", null, null, "(Lnet/minecraft/nbt/NBTTagCompound;[BLnet/minecraft/world/chunk/NibbleArray;Lnet/minecraft/world/chunk/NibbleArray;)V");
 
-	// for non-mc classes
-	private Name(String deobf) {
-		this(deobf, deobf);
-	}
+	// methods
+	hooks_chunkPrimer_getBlockState(hooks, "chunkPrimer_getBlockState", null, "(Lnet/minecraft/world/chunk/ChunkPrimer;III)Lnet/minecraft/block/state/IBlockState;"),
+	hooks_chunkPrimer_setBlockState(hooks, "chunkPrimer_setBlockState", null, "(Lnet/minecraft/world/chunk/ChunkPrimer;IIILnet/minecraft/block/state/IBlockState;)V"),
+	hooks_blockStateContainer_getDataForNBT(hooks, "blockStateContainer_getDataForNBT", null, "(Lnet/minecraft/world/chunk/storage/ExtendedBlockStorage;Lnet/minecraft/nbt/NBTTagCompound;[BLnet/minecraft/world/chunk/NibbleArray;)Lnet/minecraft/world/chunk/NibbleArray;"),
+	hooks_blockStateContainer_setDataFromNBT(hooks, "blockStateContainer_setDataFromNBT", null, "(Lnet/minecraft/world/chunk/storage/ExtendedBlockStorage;Lnet/minecraft/nbt/NBTTagCompound;[BLnet/minecraft/world/chunk/NibbleArray;Lnet/minecraft/world/chunk/NibbleArray;)V"),
+	hooks_chunkPrimer_findGroundBlockIdx(hooks, "chunkPrimer_findGroundBlockIdx", null, "(Lnet/minecraft/world/chunk/ChunkPrimer;II)I"),
+	chunkPrimer_setBlockState(chunkPrimer, "setBlockState", "func_177855_a", "(IIILnet/minecraft/block/state/IBlockState;)V"),
+	chunkPrimer_getBlockState(chunkPrimer, "getBlockState", "func_177856_a", "(III)Lnet/minecraft/block/state/IBlockState;"),
+	chunkPrimer_findGroundBlockIdx(chunkPrimer, "findGroundBlockIdx", "func_186138_a", "(II)I"),
+	acl_writeChunkToNBT(acl, "writeChunkToNBT", "func_75820_a", "(Lnet/minecraft/world/chunk/Chunk;Lnet/minecraft/world/World;Lnet/minecraft/nbt/NBTTagCompound;)V"),
+	acl_readChunkFromNBT(acl, "readChunkFromNBT", "func_75823_a", "(Lnet/minecraft/world/World;Lnet/minecraft/nbt/NBTTagCompound;)Lnet/minecraft/world/chunk/Chunk;"),
+	ebs_getData(ebs, "getData", "func_186049_g", "()Lnet/minecraft/world/chunk/BlockStateContainer;"),
+	bsc_getDataForNBT(bsc, "getDataForNBT", "func_186017_a", "([BLnet/minecraft/world/chunk/NibbleArray;)Lnet/minecraft/world/chunk/NibbleArray;"),
+	bsc_setDataFromNBT(bsc, "setDataFromNBT", "func_186019_a", "([BLnet/minecraft/world/chunk/NibbleArray;Lnet/minecraft/world/chunk/NibbleArray;)V"),
+	block_getStateId(block, "getStateId", "func_176210_f", "(Lnet/minecraft/block/state/IBlockState;)I"),
+	block_getStateById(block, "getStateById", "func_176220_d", "(I)Lnet/minecraft/block/state/IBlockState;"),
+	renderGlobal_playEvent(renderGlobal, "playEvent", "func_180439_a", "(Lnet/minecraft/entity/player/EntityPlayer;ILnet/minecraft/util/math/BlockPos;I)V"),
+	packet_readPacketData(packet, "readPacketData", "func_148837_a", "(Lnet/minecraft/network/PacketBuffer;)V"),
+	packet_writePacketData(packet, "writePacketData", "func_148840_b", "(Lnet/minecraft/network/PacketBuffer;)V"),
+	
+	// fields
+	chunkPrimer_data(chunkPrimer, "data", "field_177860_a", "[B");
 
 	// for mc classes
-	private Name(String deobf, String obf) {
+	private Name(String deobf) {
 		this.clazz = null;
 		this.deobf = deobf;
-		this.obf = obf;
 		this.srg = deobf;
 		this.desc = null;
 	}
 
 	// for fields and methods
-	private Name(Name clazz, String deobf, String obf, String srg, String desc) {
+	private Name(Name clazz, String deobf, String srg, String desc) {
 		this.clazz = clazz;
 		this.deobf = deobf;
-		this.obf = obf != null ? obf : deobf;
 		this.srg = srg != null ? srg : deobf;
 		this.desc = desc;
 	}
 
 	public boolean matches(MethodNode x) {
 		assert desc.startsWith("(");
-		return obf.equals(x.name) && obfDesc.equals(x.desc) || srg.equals(x.name) && desc.equals(x.desc) || deobf.equals(x.name) && desc.equals(x.desc);
+		return srg.equals(x.name) && desc.equals(x.desc) || deobf.equals(x.name) && desc.equals(x.desc);
 	}
 
 	public boolean matches(FieldNode x) {
 		assert !desc.startsWith("(");
-		return obf.equals(x.name) && obfDesc.equals(x.desc) || srg.equals(x.name) && desc.equals(x.desc) || deobf.equals(x.name) && desc.equals(x.desc);
+		return srg.equals(x.name) && desc.equals(x.desc) || deobf.equals(x.name) && desc.equals(x.desc);
 	}
 
 	public boolean matches(MethodInsnNode x) {
 		return matches(x, !Transformer.envDeobfuscated);
 	}
-	
+
 	public boolean matches(MethodInsnNode x, boolean obfuscated) {
 		assert desc.startsWith("(");
 		if (obfuscated) {
-			return clazz.obf.equals(x.owner) && obf.equals(x.name) && obfDesc.equals(x.desc) || clazz.srg.equals(x.owner) && srg.equals(x.name) && desc.equals(x.desc);
+			return clazz.srg.equals(x.owner) && srg.equals(x.name) && desc.equals(x.desc);
 		}
 		else {
 			return clazz.deobf.equals(x.owner) && deobf.equals(x.name) && desc.equals(x.desc);
@@ -95,13 +94,17 @@ public enum Name {
 	public boolean matches(FieldInsnNode x, boolean obfuscated) {
 		assert !desc.startsWith("(");
 		if (obfuscated) {
-			return clazz.obf.equals(x.owner) && obf.equals(x.name) && obfDesc.equals(x.desc) || clazz.srg.equals(x.owner) && srg.equals(x.name) && desc.equals(x.desc);
+			return clazz.srg.equals(x.owner) && srg.equals(x.name) && desc.equals(x.desc);
 		}
 		else {
 			return clazz.deobf.equals(x.owner) && deobf.equals(x.name) && desc.equals(x.desc);
 		}
 	}
 
+	public MethodInsnNode staticInvocation() {
+		return staticInvocation(!Transformer.envDeobfuscated);
+	}
+	
 	public MethodInsnNode staticInvocation(boolean obfuscated) {
 		// static interface methods aren't supported by this, they'd need itf=true
 		assert desc.startsWith("(");
@@ -122,11 +125,11 @@ public enum Name {
 			return new MethodInsnNode(Opcodes.INVOKEVIRTUAL, clazz.deobf, deobf, desc, false);
 		}
 	}
-	
+
 	public MethodInsnNode interfaceInvocation() {
 		return interfaceInvocation(!Transformer.envDeobfuscated);
 	}
-	
+
 	public MethodInsnNode interfaceInvocation(boolean obfuscated) {
 		assert desc.startsWith("(");
 		if (obfuscated) { // srg invocation
@@ -177,46 +180,13 @@ public enum Name {
 		}
 	}
 
-	private static void translateDescs() {
-		StringBuilder sb = new StringBuilder();
-		for (Name name : Name.values()) {
-			if (name.desc == null)
-				continue;
-			int pos = 0;
-			int endPos = -1;
-			while ((pos = name.desc.indexOf('L', pos)) != -1) {
-				sb.append(name.desc, endPos + 1, pos);
-				endPos = name.desc.indexOf(';', pos + 1);
-				String cName = name.desc.substring(pos + 1, endPos);
-				for (Name name2 : Name.values()) {
-					if (name2.deobf.equals(cName)) {
-						cName = name2.obf;
-						break;
-					}
-				}
-				sb.append('L');
-				sb.append(cName);
-				sb.append(';');
-				pos = endPos + 1;
-			}
-			sb.append(name.desc, endPos + 1, name.desc.length());
-			name.obfDesc = sb.toString();
-			sb.setLength(0);
-			//System.out.printf("deobf: %s, obf: %s, desc: %s, obfDesc: %s%n", name.deobf, name.obf, name.desc, name.obfDesc);
-		}
-	}
-
 	public final Name clazz;
 	public final String deobf;
 	public String deobfDotted;
-	public final String obf;
 	public final String srg;
 	public final String desc;
-	public String obfDesc;
 
 	static {
-		translateDescs();
-		
 		for (Name name : Name.values()) {
 			name.deobfDotted = name.deobf.replace('/', '.');
 		}

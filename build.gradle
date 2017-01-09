@@ -10,20 +10,14 @@ buildscript {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-		maven {
-            name = 'sponge'
-            url = 'http://repo.spongepowered.org/maven'
-        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
-		classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'org.spongepowered.mixin'
 
-version = "1.5.1"
+version = "1.5.2"
 archivesBaseName = "NotEnoughIDs"
 
 sourceCompatibility = targetCompatibility = "1.6"
@@ -39,31 +33,13 @@ minecraft {
     mappings = "snapshot_20160908"
 }
 
-configurations {
-	shade
-}
-
-dependencies {
-	shade files('libs/mixin-0.6-20161122.161024-5.jar')
-}
-
 jar {
 	manifest {
 		attributes (
-			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-			'TweakOrder': '100',
-			'MixinConfigs': 'mixins.neid.json',
 			'FMLCorePlugin': 'ru.fewizz.neid.asm.Plugin',
-			'ForceLoadAsMod': 'true',
 			'FMLCorePluginContainsFMLMod': 'true',
 			'FMLAT': 'neid_at.cfg'
 		)
-    }
-	
-	configurations.shade.each { dep ->
-        from(project.zipTree(dep)){
-            exclude 'META-INF', 'META-INF/**'
-        }
     }
 }
 

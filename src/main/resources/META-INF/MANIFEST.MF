@@ -1,5 +1,2 @@
-TweakClass: org.spongepowered.asm.launch.MixinTweaker
-TweakOrder: 100
-MixinConfigs: mixins.neid.json
 FMLCorePlugin: ru.fewizz.neid.asm.Plugin
 FMLCorePluginContainsFMLMod: true

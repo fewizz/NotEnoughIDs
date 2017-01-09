@@ -20,6 +20,7 @@ import org.objectweb.asm.tree.MethodNode;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 import ru.fewizz.neid.asm.group.TransformerGroupAnvilChunkLoader;
+import ru.fewizz.neid.asm.group.TransformerGroupChunkPrimer;
 import ru.fewizz.neid.asm.group.TransformerGroupHardcoredConstants;
 
 public class Transformer implements IClassTransformer {
@@ -34,50 +35,51 @@ public class Transformer implements IClassTransformer {
 	public Transformer() {
 		groups = new ArrayList<TransformerGroup>();
 		namesToTransform = new HashMap<TransformerGroup, Name[]>();
-		
+
 		addTransformerGroup(new TransformerGroupHardcoredConstants());
 		addTransformerGroup(new TransformerGroupAnvilChunkLoader());
+		addTransformerGroup(new TransformerGroupChunkPrimer());
 	}
-	
+
 	private void addTransformerGroup(TransformerGroup group) {
 		groups.add(group);
 		namesToTransform.put(group, group.getRequiredClasses());
 	}
-	
+
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] bytes) {
-		
+
 		boolean transformed = false;
-		
-		for(Entry<TransformerGroup, Name[]> entry : namesToTransform.entrySet()) {
-			
-			for(Name clazz : entry.getValue()) {
-				if(clazz.deobfDotted.equals(transformedName)) {
-					if(!transformed) {
+
+		for (Entry<TransformerGroup, Name[]> entry : namesToTransform.entrySet()) {
+
+			for (Name clazz : entry.getValue()) {
+				if (clazz.deobfDotted.equals(transformedName)) {
+					if (!transformed) {
 						transformed = true;
 						start(bytes, transformedName);
 					}
-					
+
 					entry.getKey().transform(cn, clazz, bytes);
 				}
 			}
 		}
-		
-		if(transformed) {
+
+		if (transformed) {
 			end();
 			return cw.toByteArray();
 		}
 
 		return bytes;
 	}
-	
+
 	void start(byte[] bytes, String name) {
 		LOGGER.info("PATCHING: " + name);
 		cn = new ClassNode(Opcodes.ASM5);
 		cr = new ClassReader(bytes);
 		cr.accept(cn, 0);
 	}
-	
+
 	void end() {
 		cw = new ClassWriter(0);
 		cn.accept(cw);
