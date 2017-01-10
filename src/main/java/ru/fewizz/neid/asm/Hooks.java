@@ -65,10 +65,6 @@ public class Hooks {
 		for (int block = 0; block < 4096; ++block) {
 			IBlockState s = ebs.getData().get(block);
 			
-			//int x = block & 0xF;
-			//int y = (block >> 8) & 0xF;
-			//int z = (block >> 4) & 0xF;
-			
 			if(s == AIR_BLOCK_STATE) {
 				ids[block] = 0;
 				metaNib.setIndex(block, 0);
@@ -110,9 +106,6 @@ public class Hooks {
 		NibbleArray add2 = nbt.hasKey("Add2", 7) ? new NibbleArray(nbt.getByteArray("Add2")) : null;
 		
 		for (int block = 0; block < 4096; ++block) {
-			//int x = block & 0xF;
-			//int y = (block >> 8) & 0xF;
-			//int z = (block >> 4) & 0xF;
 			int toAdd = add1 == null ? 0 : add1.getFromIndex(block);
 			if(add2 != null) {
 				toAdd = (toAdd & 0xF) | (add2.getFromIndex(block) << 4);

@@ -60,7 +60,7 @@ public class Transformer implements IClassTransformer {
 						start(bytes, transformedName);
 					}
 
-					entry.getKey().transform(cn, clazz, bytes);
+					entry.getKey().transform(cn, clazz);
 				}
 			}
 		}

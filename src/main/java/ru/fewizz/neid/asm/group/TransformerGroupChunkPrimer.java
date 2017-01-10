@@ -27,7 +27,7 @@ public class TransformerGroupChunkPrimer extends TransformerGroup {
 	}
 
 	@Override
-	public void transform(ClassNode cn, Name clazz, byte[] bytes) {
+	public void transform(ClassNode cn, Name clazz) {
 		MethodNode mn;
 
 		switch (clazz) {

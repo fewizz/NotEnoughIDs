@@ -30,7 +30,7 @@ public class TransformerGroupAnvilChunkLoader extends TransformerGroup {
 	}
 
 	@Override
-	public void transform(ClassNode cn, Name clazz, byte[] bytes) {
+	public void transform(ClassNode cn, Name clazz) {
 		MethodNode mn = AsmUtil.findMethod(cn, Name.acl_writeChunkToNBT);
 		boolean found = false;
 

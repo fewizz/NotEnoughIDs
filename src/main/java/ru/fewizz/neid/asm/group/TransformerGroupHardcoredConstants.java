@@ -15,7 +15,7 @@ public class TransformerGroupHardcoredConstants extends TransformerGroup {
 	}
 
 	@Override
-	public void transform(ClassNode cn, Name clazz, byte[] bytes) {
+	public void transform(ClassNode cn, Name clazz) {
 		if (clazz == Name.fmlGameData) {
 			AsmUtil.transformInlinedSizeMethod(cn, AsmUtil.findMethod(cn, "<init>"), 4095, 65535);
 		}
