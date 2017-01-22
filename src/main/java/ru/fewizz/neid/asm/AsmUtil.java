@@ -106,24 +106,10 @@ public class AsmUtil {
 		int i = 0;
 
 		for (ListIterator<AbstractInsnNode> it = method.instructions.iterator(); it.hasNext();) {
+			found = false;
 			AbstractInsnNode insn = it.next();
 
-			if (insn.getOpcode() == Opcodes.ICONST_0 && oldValue == 0) {
-				found = true;
-			}
-			else if (insn.getOpcode() == Opcodes.ICONST_1 && oldValue == 1) {
-				found = true;
-			}
-			else if (insn.getOpcode() == Opcodes.ICONST_2 && oldValue == 2) {
-				found = true;
-			}
-			else if (insn.getOpcode() == Opcodes.ICONST_3 && oldValue == 3) {
-				found = true;
-			}
-			else if (insn.getOpcode() == Opcodes.ICONST_4 && oldValue == 4) {
-				found = true;
-			}
-			else if (insn.getOpcode() == Opcodes.ICONST_5 && oldValue == 5) {
+			if (oldValue >= 0 && oldValue <= 5 && insn.getOpcode() == Opcodes.ICONST_0 + oldValue) {
 				found = true;
 			}
 
@@ -142,45 +128,31 @@ public class AsmUtil {
 				}
 			}
 
-			if (found) {
-				foundOnce = true;
+			if (!found) {
+				continue;
+			}
+			
+			foundOnce = true;
 
-				if (newValue == 0) {
-					it.set(new InsnNode(Opcodes.ICONST_0));
-				}
-				else if (newValue == 1) {
-					it.set(new InsnNode(Opcodes.ICONST_1));
-				}
-				else if (newValue == 2) {
-					it.set(new InsnNode(Opcodes.ICONST_2));
-				}
-				else if (newValue == 3) {
-					it.set(new InsnNode(Opcodes.ICONST_3));
-				}
-				else if (newValue == 4) {
-					it.set(new InsnNode(Opcodes.ICONST_4));
-				}
-				else if (newValue == 5) {
-					it.set(new InsnNode(Opcodes.ICONST_5));
-				}
-
-				else if (newValue >= Byte.MIN_VALUE && newValue <= Byte.MAX_VALUE) {
-					it.set(new IntInsnNode(Opcodes.BIPUSH, newValue));
-				}
-				else if (newValue >= Short.MIN_VALUE && newValue <= Short.MAX_VALUE) {
-					it.set(new IntInsnNode(Opcodes.SIPUSH, newValue));
-				}
-				else {
-					it.set(new LdcInsnNode(newValue));
-				}
-
-				found = false;
+			if (newValue >= 0 && newValue <= 5) {
+				it.set(new InsnNode(Opcodes.ICONST_0 + newValue));
+			}
+			else if (newValue >= Byte.MIN_VALUE && newValue <= Byte.MAX_VALUE) {
+				it.set(new IntInsnNode(Opcodes.BIPUSH, newValue));
+			}
+			else if (newValue >= Short.MIN_VALUE && newValue <= Short.MAX_VALUE) {
+				it.set(new IntInsnNode(Opcodes.SIPUSH, newValue));
+			}
+			else {
+				it.set(new LdcInsnNode(newValue));
 			}
 
 		}
 
-		if (!foundOnce && !optional)
+		
+		if (!foundOnce && !optional) {
 			throw new AsmTransformException("can't find constant value " + oldValue + " in method " + method.name);
+		}
 
 		return foundOnce;
 	}

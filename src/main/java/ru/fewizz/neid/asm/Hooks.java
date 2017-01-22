@@ -25,7 +25,7 @@ public class Hooks {
 	public static IBlockState chunkPrimer_getBlockState(ChunkPrimer cp, int x, int y, int z) {
 		int index = chunkPrimer_getBlockIndex(x, y, z);
 
-		int id = cp.data[chunkPrimer_getBlockIndex(x, y, z)];
+		int id = cp.data[index];
 		id = id | (chunkPrimer_getAdditionalData(cp)[index] << 16);
 
 		IBlockState iblockstate = (IBlockState) Block.BLOCK_STATE_IDS.getByValue(id);
@@ -62,7 +62,7 @@ public class Hooks {
 		NibbleArray add = null;
 		NibbleArray add2 = null;
 
-		for (int block = 0; block < 4096; ++block) {
+		for (int block = 0; block < 4096; block++) {
 			IBlockState s = ebs.getData().get(block);
 			
 			if(s == AIR_BLOCK_STATE) {
@@ -105,7 +105,7 @@ public class Hooks {
 	public static void blockStateContainer_setDataFromNBT(ExtendedBlockStorage ebs, NBTTagCompound nbt, byte[] ids, NibbleArray meta, @Nullable NibbleArray add1) {
 		NibbleArray add2 = nbt.hasKey("Add2", 7) ? new NibbleArray(nbt.getByteArray("Add2")) : null;
 		
-		for (int block = 0; block < 4096; ++block) {
+		for (int block = 0; block < 4096; block++) {
 			int toAdd = add1 == null ? 0 : add1.getFromIndex(block);
 			if(add2 != null) {
 				toAdd = (toAdd & 0xF) | (add2.getFromIndex(block) << 4);

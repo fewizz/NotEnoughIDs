@@ -22,6 +22,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import ru.fewizz.neid.asm.group.TransformerGroupAnvilChunkLoader;
 import ru.fewizz.neid.asm.group.TransformerGroupChunkPrimer;
 import ru.fewizz.neid.asm.group.TransformerGroupHardcoredConstants;
+import ru.fewizz.neid.asm.group.TransformerGroupWorldEdit;
 
 public class Transformer implements IClassTransformer {
 	public static final Logger LOGGER = LogManager.getLogger("neid");
@@ -39,6 +40,7 @@ public class Transformer implements IClassTransformer {
 		addTransformerGroup(new TransformerGroupHardcoredConstants());
 		addTransformerGroup(new TransformerGroupAnvilChunkLoader());
 		addTransformerGroup(new TransformerGroupChunkPrimer());
+		addTransformerGroup(new TransformerGroupWorldEdit());
 	}
 
 	private void addTransformerGroup(TransformerGroup group) {

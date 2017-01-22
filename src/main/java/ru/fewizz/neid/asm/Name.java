@@ -27,6 +27,9 @@ public enum Name {
 	statList("net/minecraft/stats/StatList"),
 	hooks("ru/fewizz/neid/asm/Hooks"),
 	fmlGameData("net/minecraftforge/fml/common/registry/GameData"),
+	
+	// not-vanilla
+	we_baseBlock("com/sk89q/worldedit/blocks/BaseBlock"),
 
 	// methods
 	hooks_chunkPrimer_getBlockState(hooks, "chunkPrimer_getBlockState", null, "(Lnet/minecraft/world/chunk/ChunkPrimer;III)Lnet/minecraft/block/state/IBlockState;"),

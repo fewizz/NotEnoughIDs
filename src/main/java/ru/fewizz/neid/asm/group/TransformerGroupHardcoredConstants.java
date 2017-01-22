@@ -25,6 +25,7 @@ public class TransformerGroupHardcoredConstants extends TransformerGroup {
 		}
 		
 		if(clazz == Name.renderGlobal) {
+			AsmUtil.transformInlinedSizeMethod(cn, AsmUtil.findMethod(cn, Name.renderGlobal_playEvent), 4095, 65535);
 			AsmUtil.transformInlinedSizeMethod(cn, AsmUtil.findMethod(cn, Name.renderGlobal_playEvent), 12, 16);
 		}
 		
