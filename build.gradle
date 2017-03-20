@@ -17,7 +17,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.5.3"
+version = "1.5.4"
 archivesBaseName = "NotEnoughIDs"
 
 sourceCompatibility = targetCompatibility = "1.6"
@@ -27,10 +27,9 @@ compileJava {
 }
 
 minecraft {
-    version = "1.10.2-12.18.1.2076"
+    version = "1.11.2-13.20.0.2259"
     runDir = "run"
-    
-    mappings = "snapshot_20160908"
+    mappings = "snapshot_20170319"
 }
 
 jar {

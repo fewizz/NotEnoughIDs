@@ -22,7 +22,7 @@ import ru.fewizz.neid.asm.TransformerGroup;
 public class TransformerGroupChunkPrimer extends TransformerGroup {
 
 	@Override
-	public Name[] getRequiredClasses() {
+	public Name[] getRequiredClassesInternal() {
 		return new Name[] { Name.chunkPrimer, Name.hooks };
 	}
 
@@ -71,7 +71,7 @@ public class TransformerGroupChunkPrimer extends TransformerGroup {
 				mn.instructions.add(new VarInsnNode(ALOAD, 4)); // IBlockState
 				mn.instructions.add(Name.hooks_chunkPrimer_setBlockState.staticInvocation());
 				mn.instructions.add(new InsnNode(RETURN));
-				
+
 				mn = AsmUtil.findMethod(cn, Name.chunkPrimer_findGroundBlockIdx);
 				mn.instructions.clear();
 				mn.instructions.add(new VarInsnNode(ALOAD, 0)); // this

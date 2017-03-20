@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.CoreModManager;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 @IFMLLoadingPlugin.SortingIndex(value = 1001)
-@IFMLLoadingPlugin.MCVersion(value = "1.10.2")
+@IFMLLoadingPlugin.MCVersion(value = "1.11.2")
 public class Plugin implements IFMLLoadingPlugin {
 	
 	@Override
@@ -32,7 +32,7 @@ public class Plugin implements IFMLLoadingPlugin {
 
 	@Override
 	public String getAccessTransformerClass() {
-		return AccessTransformer.class.getName();
+		return null;
 	}
 
 }

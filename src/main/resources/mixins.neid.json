@@ -1,9 +1,0 @@
-{
-	"required": true,
-	"package": "ru.fewizz.neid.mixin",
-	"target": "@env(DEFAULT)",
-	"mixins": [
-		"MixinBlockStateContainer",
-		"MixinChunkPrimer"
-	]
-}

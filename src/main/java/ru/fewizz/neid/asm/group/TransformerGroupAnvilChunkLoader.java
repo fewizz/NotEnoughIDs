@@ -25,7 +25,7 @@ import ru.fewizz.neid.asm.TransformerGroup;
 public class TransformerGroupAnvilChunkLoader extends TransformerGroup {
 
 	@Override
-	public Name[] getRequiredClasses() {
+	public Name[] getRequiredClassesInternal() {
 		return new Name[] { Name.acl };
 	}
 

@@ -30,12 +30,10 @@ public class Transformer implements IClassTransformer {
 	private ClassNode cn;
 	private ClassReader cr;
 	private ClassWriter cw;
-	private List<TransformerGroup> groups;
-	private Map<TransformerGroup, Name[]> namesToTransform;
+	private List<TransformerGroup> transformerGroups;
 
 	public Transformer() {
-		groups = new ArrayList<TransformerGroup>();
-		namesToTransform = new HashMap<TransformerGroup, Name[]>();
+		transformerGroups = new ArrayList();
 
 		addTransformerGroup(new TransformerGroupHardcoredConstants());
 		addTransformerGroup(new TransformerGroupAnvilChunkLoader());
@@ -44,25 +42,30 @@ public class Transformer implements IClassTransformer {
 	}
 
 	private void addTransformerGroup(TransformerGroup group) {
-		groups.add(group);
-		namesToTransform.put(group, group.getRequiredClasses());
+		transformerGroups.add(group);
 	}
 
 	@Override
-	public byte[] transform(String name, String transformedName, byte[] bytes) {
-
+	public byte[] transform(String name, String deobfName, byte[] bytes) {
 		boolean transformed = false;
 
-		for (Entry<TransformerGroup, Name[]> entry : namesToTransform.entrySet()) {
+		for (Iterator<TransformerGroup> it = transformerGroups.iterator(); it.hasNext();) {
+			TransformerGroup tg = it.next();
 
-			for (Name clazz : entry.getValue()) {
-				if (clazz.deobfDotted.equals(transformedName)) {
+			for (Name clazz : tg.getRequiredClasses()) {
+				if (clazz.deobfDotted.equals(deobfName)) {
 					if (!transformed) {
 						transformed = true;
-						start(bytes, transformedName);
+						start(bytes, deobfName, tg);
 					}
 
-					entry.getKey().transform(cn, clazz);
+					LOGGER.info("Patching class: \"" + name + "\" with Transformer Group: \"" + tg.getClass().getSimpleName() + "\"");
+					tg.startTransform(cn, clazz);
+
+					if (tg.isPatchedAllClasses()) {
+						it.remove();
+						break;
+					}
 				}
 			}
 		}
@@ -75,8 +78,7 @@ public class Transformer implements IClassTransformer {
 		return bytes;
 	}
 
-	void start(byte[] bytes, String name) {
-		LOGGER.info("PATCHING: " + name);
+	void start(byte[] bytes, String name, TransformerGroup tg) {
 		cn = new ClassNode(Opcodes.ASM5);
 		cr = new ClassReader(bytes);
 		cr.accept(cn, 0);

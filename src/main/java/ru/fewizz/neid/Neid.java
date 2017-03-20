@@ -19,13 +19,13 @@ public class Neid
 {
     public static final String MODID = "neid";
     public static final String NAME = "NotEnoughIDs";
-    public static final String VERSION = "1.5.3";
-    public static final boolean debug = false;
+    public static final String VERSION = "1.5.4";
+    public static final boolean DEBUG = false;
     
     @EventHandler
     public void init(FMLPreInitializationEvent event)
     {
-    	if(!debug) {
+    	if(!DEBUG) {
     		return;
     	}
     	
