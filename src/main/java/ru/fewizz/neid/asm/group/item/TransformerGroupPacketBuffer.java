@@ -30,7 +30,7 @@ public class TransformerGroupPacketBuffer extends TransformerGroup {
 			AbstractInsnNode insn = it.next();
 
 			if (insn.getNext().getOpcode() == ISTORE && ((VarInsnNode)insn.getNext()).var == 2) { // data field initialisation
-				// Yeah, short's max value now indicates ivalid item, bcs of '&0xFFFF'.
+				// Yeah, short's max value now indicates invalid item, bcs of '&0xFFFF'.
 				it.add(new LdcInsnNode(new Integer(0xFFFF)));
 				it.add(new InsnNode(IAND));
 				
