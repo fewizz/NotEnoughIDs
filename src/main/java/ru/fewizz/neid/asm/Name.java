@@ -50,6 +50,7 @@ public enum Name {
 	renderGlobal_playEvent(renderGlobal, "playEvent", "func_180439_a", "(Lnet/minecraft/entity/player/EntityPlayer;ILnet/minecraft/util/math/BlockPos;I)V"),
 	packet_readPacketData(packet, "readPacketData", "func_148837_a", "(Lnet/minecraft/network/PacketBuffer;)V"),
 	packet_writePacketData(packet, "writePacketData", "func_148840_b", "(Lnet/minecraft/network/PacketBuffer;)V"),
+	packetBuffer_readItemStackFromBuffer(packetBuffer, "readItemStackFromBuffer", "func_150791_c", "()Lnet/minecraft/item/ItemStack;"),
 	
 	// fields
 	chunkPrimer_data(chunkPrimer, "data", "field_177860_a", "[B");

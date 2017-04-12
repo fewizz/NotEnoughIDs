@@ -32,7 +32,7 @@ public class Plugin implements IFMLLoadingPlugin {
 
 	@Override
 	public String getAccessTransformerClass() {
-		return AccessTransformer.class.getName();
+		return null;
 	}
 
 }

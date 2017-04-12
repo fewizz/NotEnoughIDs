@@ -1,4 +1,4 @@
-package ru.fewizz.neid.asm.group;
+package ru.fewizz.neid.asm.group.block;
 
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -7,10 +7,10 @@ import ru.fewizz.neid.asm.AsmUtil;
 import ru.fewizz.neid.asm.Name;
 import ru.fewizz.neid.asm.TransformerGroup;
 
-public class TransformerGroupHardcoredConstants extends TransformerGroup {
+public class TransformerGroupBlockHardcoredConstants extends TransformerGroup {
 
 	@Override
-	public Name[] getRequiredClasses() {
+	public Name[] getRequiredClassesInternal() {
 		return new Name[] {Name.fmlGameData, Name.statList, Name.renderGlobal, Name.block, Name.packetBlockAction};
 	}
 

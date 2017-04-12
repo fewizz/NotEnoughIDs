@@ -1,4 +1,4 @@
-package ru.fewizz.neid.asm.group;
+package ru.fewizz.neid.asm.group.block;
 
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -9,7 +9,7 @@ import ru.fewizz.neid.asm.TransformerGroup;
 
 public class TransformerGroupWorldEdit extends TransformerGroup {
 	@Override
-	public Name[] getRequiredClasses() {
+	public Name[] getRequiredClassesInternal() {
 		return new Name[] {Name.we_baseBlock};
 	}
 
