@@ -66,7 +66,7 @@ public class Transformer implements IClassTransformer {
 						start(bytes, deobfName, tg);
 					}
 
-					LOGGER.info("Patching class: \"" + name + "\" with Transformer Group: \"" + tg.getClass().getSimpleName() + "\"");
+					LOGGER.info("Patching class: \"" + deobfName + "\" with Transformer Group: \"" + tg.getClass().getSimpleName() + "\"");
 					tg.startTransform(cn, clazz);
 
 					if (tg.isPatchedAllClasses()) {

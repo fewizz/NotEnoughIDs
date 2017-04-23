@@ -16,7 +16,8 @@ public class TransformerGroupWorldEdit extends TransformerGroup {
 	@Override
 	public void transform(ClassNode cn, Name clazz) {
 		MethodNode mn = AsmUtil.findMethod(cn, "internalSetId");
-		AsmUtil.transformInlinedSizeMethod(cn, mn, 0xFFF, 0xFFFF);
+		// false, cos FAWE already uses 65535
+		AsmUtil.transformInlinedSizeMethod(cn, mn, 0xFFF, 0xFFFF, false);
 		
 		mn = AsmUtil.findMethod(cn, "hashCode");
 		AsmUtil.transformInlinedSizeMethod(cn, mn, 3, 4); // why 3, if meta is 4 bit?

@@ -97,18 +97,22 @@ public class AsmUtil {
 	}
 
 	public static boolean transformInlinedSizeMethod(ClassNode cn, MethodNode method, int oldValue, int newValue) {
-		return transformInlinedSizeMethod(cn, method, oldValue, newValue, false, 0, Integer.MAX_VALUE);
+		return transformInlinedSizeMethod(cn, method, oldValue, newValue, true, 0, Integer.MAX_VALUE);
+	}
+	
+	public static boolean transformInlinedSizeMethod(ClassNode cn, MethodNode method, int oldValue, int newValue, boolean crashIfNotFound) {
+		return transformInlinedSizeMethod(cn, method, oldValue, newValue, crashIfNotFound, 0, Integer.MAX_VALUE);
 	}
 	
 	public static boolean transformInlinedSizeMethod(ClassNode cn, MethodNode method, int oldValue, int newValue, int index) {
-		return transformInlinedSizeMethod(cn, method, oldValue, newValue, false, index, index);
+		return transformInlinedSizeMethod(cn, method, oldValue, newValue, true, index, index);
 	}
 
 	public static boolean transformInlinedSizeMethod(ClassNode cn, MethodNode method, int oldValue, int newValue, int fromIndex, int toIndex) {
-		return transformInlinedSizeMethod(cn, method, oldValue, newValue, false, fromIndex, toIndex);
+		return transformInlinedSizeMethod(cn, method, oldValue, newValue, true, fromIndex, toIndex);
 	}
 	
-	public static boolean transformInlinedSizeMethod(ClassNode cn, MethodNode method, int oldValue, int newValue, boolean notCrashIfNotFound, int fromIndex, int toIndex) {
+	public static boolean transformInlinedSizeMethod(ClassNode cn, MethodNode method, int oldValue, int newValue, boolean crashIfNotFound, int fromIndex, int toIndex) {
 		boolean found = false;
 		boolean foundOnce = false;
 		int index = 0;
@@ -163,7 +167,7 @@ public class AsmUtil {
 		}
 
 		
-		if (!foundOnce && !notCrashIfNotFound) {
+		if (!foundOnce && crashIfNotFound) {
 			throw new AsmTransformException("can't find constant value " + oldValue + " in method " + method.name);
 		}
 
