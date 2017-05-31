@@ -1,4 +1,4 @@
-package ru.fewizz.neid.asm.group;
+package ru.fewizz.neid.asm.group.block;
 
 import java.util.Iterator;
 import java.util.ListIterator;

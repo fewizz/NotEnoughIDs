@@ -19,10 +19,12 @@ import org.objectweb.asm.tree.IntInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import net.minecraft.launchwrapper.IClassTransformer;
-import ru.fewizz.neid.asm.group.TransformerGroupAnvilChunkLoader;
-import ru.fewizz.neid.asm.group.TransformerGroupChunkPrimer;
-import ru.fewizz.neid.asm.group.TransformerGroupHardcoredConstants;
-import ru.fewizz.neid.asm.group.TransformerGroupWorldEdit;
+import ru.fewizz.neid.asm.group.block.TransformerGroupAnvilChunkLoader;
+import ru.fewizz.neid.asm.group.block.TransformerGroupChunkPrimer;
+import ru.fewizz.neid.asm.group.block.TransformerGroupBlockHardcoredConstants;
+import ru.fewizz.neid.asm.group.block.TransformerGroupWorldEdit;
+import ru.fewizz.neid.asm.group.item.TransformerGroupItemHardcoredConstants;
+import ru.fewizz.neid.asm.group.item.TransformerGroupPacketBuffer;
 
 public class Transformer implements IClassTransformer {
 	public static final Logger LOGGER = LogManager.getLogger("neid");
@@ -35,10 +37,15 @@ public class Transformer implements IClassTransformer {
 	public Transformer() {
 		transformerGroups = new ArrayList();
 
-		addTransformerGroup(new TransformerGroupHardcoredConstants());
+		// Block
+		addTransformerGroup(new TransformerGroupBlockHardcoredConstants());
 		addTransformerGroup(new TransformerGroupAnvilChunkLoader());
 		addTransformerGroup(new TransformerGroupChunkPrimer());
 		addTransformerGroup(new TransformerGroupWorldEdit());
+		
+		// Item
+		addTransformerGroup(new TransformerGroupItemHardcoredConstants());
+		addTransformerGroup(new TransformerGroupPacketBuffer());
 	}
 
 	private void addTransformerGroup(TransformerGroup group) {
@@ -59,7 +66,7 @@ public class Transformer implements IClassTransformer {
 						start(bytes, deobfName, tg);
 					}
 
-					LOGGER.info("Patching class: \"" + name + "\" with Transformer Group: \"" + tg.getClass().getSimpleName() + "\"");
+					LOGGER.info("Patching class: \"" + deobfName + "\" with Transformer Group: \"" + tg.getClass().getSimpleName() + "\"");
 					tg.startTransform(cn, clazz);
 
 					if (tg.isPatchedAllClasses()) {

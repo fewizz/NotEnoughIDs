@@ -1,4 +1,4 @@
-package ru.fewizz.neid.asm.group;
+package ru.fewizz.neid.asm.group.block;
 
 import java.util.ListIterator;
 
@@ -71,7 +71,7 @@ public class TransformerGroupChunkPrimer extends TransformerGroup {
 				mn.instructions.add(new VarInsnNode(ALOAD, 4)); // IBlockState
 				mn.instructions.add(Name.hooks_chunkPrimer_setBlockState.staticInvocation());
 				mn.instructions.add(new InsnNode(RETURN));
-
+				
 				mn = AsmUtil.findMethod(cn, Name.chunkPrimer_findGroundBlockIdx);
 				mn.instructions.clear();
 				mn.instructions.add(new VarInsnNode(ALOAD, 0)); // this
