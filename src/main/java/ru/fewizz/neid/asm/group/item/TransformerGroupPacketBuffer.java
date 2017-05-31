@@ -46,11 +46,6 @@ public class TransformerGroupPacketBuffer extends TransformerGroup {
 			}
 		}
 		
-		int z = 0;
-		if(z < 4095) {
-			System.out.println("Z");
-		}
-		
 		throw new Error("Something is wrong");
 	}
 
