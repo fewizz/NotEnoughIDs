@@ -19,7 +19,7 @@ public class TransformerGroupItemHardcoredConstants extends TransformerGroup {
 			AsmUtil.transformInlinedSizeMethod(cn, AsmUtil.findMethod(cn, "<clinit>"), 32000, 65535);
 		}
 		if (clazz == Name.fmlGameData) {
-			AsmUtil.transformInlinedSizeMethod(cn, AsmUtil.findMethod(cn, "<init>"), 31999, 65534);
+			AsmUtil.transformInlinedSizeMethod(cn, AsmUtil.findMethod(cn, "init"), 31999, 65534);
 		}
 	}
 

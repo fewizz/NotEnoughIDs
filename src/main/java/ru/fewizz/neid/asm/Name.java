@@ -26,7 +26,7 @@ public enum Name {
 	packetBuffer("net/minecraft/network/PacketBuffer"),
 	statList("net/minecraft/stats/StatList"),
 	hooks("ru/fewizz/neid/asm/Hooks"),
-	fmlGameData("net/minecraftforge/fml/common/registry/GameData"),
+	fmlGameData("net/minecraftforge/registries/GameData"),
 	
 	// not-vanilla
 	we_baseBlock("com/sk89q/worldedit/blocks/BaseBlock"),

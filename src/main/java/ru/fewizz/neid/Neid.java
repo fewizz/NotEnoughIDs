@@ -1,5 +1,6 @@
 package ru.fewizz.neid;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockIce;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -31,8 +32,9 @@ public class Neid {
 				BlockIce block = new BlockIce();
 				block.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 				block.setUnlocalizedName("" + i);
-				GameRegistry.register(block, new ResourceLocation("neid:ICE" + i));
-				GameRegistry.register(new ItemBlock(block), new ResourceLocation("neid:ICE" + i));
+				block.setRegistryName(new ResourceLocation("neid:ICE" + i));
+				GameRegistry.findRegistry(Block.class).register(block);
+				GameRegistry.findRegistry(Item.class).register(new ItemBlock(block).setRegistryName(new ResourceLocation("neid:ICE" + i)));
 			}
 		}
 		
@@ -41,7 +43,8 @@ public class Neid {
 				Item item = new ItemArrow();
 				item.setCreativeTab(CreativeTabs.FOOD);
 				item.setUnlocalizedName("" + i);
-				GameRegistry.register(item, new ResourceLocation("neid:ARROW" + i));
+				item.setRegistryName(new ResourceLocation("neid:ARROW" + i));
+				GameRegistry.findRegistry(Item.class).register(item);
 			}
 		}
 	}
