@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class Neid {
 	public static final String MODID = "neid";
 	public static final String NAME = "NotEnoughIDs";
-	public static final String VERSION = "1.5.4.1";
+	public static final String VERSION = "1.5.4.2";
 	public static final boolean DEBUG_BLOCKS = false;
 	public static final boolean DEBUG_ITEMS = false;
 
