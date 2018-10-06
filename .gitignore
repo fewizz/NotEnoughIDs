@@ -16,3 +16,6 @@ otherclasses/
 *.classpath
 *.project
 *.launch
+/.gradle/
+/build/
+/bin/

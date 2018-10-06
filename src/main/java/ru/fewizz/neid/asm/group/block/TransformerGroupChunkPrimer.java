@@ -35,6 +35,7 @@ public class TransformerGroupChunkPrimer extends TransformerGroup {
 				cn.fields.add(new FieldNode(ACC_FINAL + ACC_PUBLIC, "add", "[B", null, null));
 
 				mn = AsmUtil.findMethod(cn, "<init>");
+				mn.maxStack++;
 				boolean found = false;
 
 				for (ListIterator<AbstractInsnNode> it = mn.instructions.iterator(); it.hasNext();) {
@@ -71,6 +72,7 @@ public class TransformerGroupChunkPrimer extends TransformerGroup {
 				mn.instructions.add(new VarInsnNode(ALOAD, 4)); // IBlockState
 				mn.instructions.add(Name.hooks_chunkPrimer_setBlockState.staticInvocation());
 				mn.instructions.add(new InsnNode(RETURN));
+				mn.maxStack = 5;
 				
 				mn = AsmUtil.findMethod(cn, Name.chunkPrimer_findGroundBlockIdx);
 				mn.instructions.clear();
