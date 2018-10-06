@@ -1,19 +1,11 @@
 package ru.fewizz.neid;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockIce;
+import net.minecraft.block.*;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArrow;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemBlockSpecial;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.chunk.BlockStatePaletteRegistry;
-import net.minecraft.world.chunk.IBlockStatePalette;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 

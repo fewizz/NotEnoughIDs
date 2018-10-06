@@ -2,19 +2,9 @@ package ru.fewizz.neid.asm.group.item;
 
 import java.util.ListIterator;
 
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldInsnNode;
-import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.IntInsnNode;
-import org.objectweb.asm.tree.JumpInsnNode;
-import org.objectweb.asm.tree.LdcInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.VarInsnNode;
+import org.objectweb.asm.tree.*;
 
-import ru.fewizz.neid.asm.AsmUtil;
-import ru.fewizz.neid.asm.Name;
-import ru.fewizz.neid.asm.TransformerGroup;
+import ru.fewizz.neid.asm.*;
 
 public class TransformerGroupPacketBuffer extends TransformerGroup {
 	@Override

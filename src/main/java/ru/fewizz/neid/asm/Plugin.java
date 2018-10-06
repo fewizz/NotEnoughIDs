@@ -2,8 +2,6 @@ package ru.fewizz.neid.asm;
 
 import java.util.Map;
 
-import net.minecraft.launchwrapper.Launch;
-import net.minecraftforge.fml.relauncher.CoreModManager;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 @IFMLLoadingPlugin.SortingIndex(value = 1001)

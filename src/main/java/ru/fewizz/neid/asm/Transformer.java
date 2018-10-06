@@ -1,30 +1,14 @@
 package ru.fewizz.neid.asm;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.*;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AbstractInsnNode;
+import org.apache.logging.log4j.*;
+import org.objectweb.asm.*;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.IntInsnNode;
-import org.objectweb.asm.tree.MethodNode;
 
 import net.minecraft.launchwrapper.IClassTransformer;
-import ru.fewizz.neid.asm.group.block.TransformerGroupAnvilChunkLoader;
-import ru.fewizz.neid.asm.group.block.TransformerGroupChunkPrimer;
-import ru.fewizz.neid.asm.group.block.TransformerGroupBlockHardcoredConstants;
-import ru.fewizz.neid.asm.group.block.TransformerGroupWorldEdit;
-import ru.fewizz.neid.asm.group.item.TransformerGroupItemHardcoredConstants;
-import ru.fewizz.neid.asm.group.item.TransformerGroupPacketBuffer;
+import ru.fewizz.neid.asm.group.block.*;
+import ru.fewizz.neid.asm.group.item.*;
 
 public class Transformer implements IClassTransformer {
 	public static final Logger LOGGER = LogManager.getLogger("neid");
@@ -35,7 +19,7 @@ public class Transformer implements IClassTransformer {
 	private List<TransformerGroup> transformerGroups;
 
 	public Transformer() {
-		transformerGroups = new ArrayList();
+		transformerGroups = new ArrayList<>();
 
 		// Block
 		addTransformerGroup(new TransformerGroupBlockHardcoredConstants());

@@ -1,26 +1,10 @@
 package ru.fewizz.neid.asm.group.block;
 
-import java.util.Iterator;
 import java.util.ListIterator;
-import java.util.Map;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldInsnNode;
-import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.LabelNode;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.TypeInsnNode;
-import org.objectweb.asm.tree.VarInsnNode;
-import org.objectweb.asm.tree.analysis.Analyzer;
+import org.objectweb.asm.tree.*;
 
-import ru.fewizz.neid.asm.AsmTransformException;
-import ru.fewizz.neid.asm.AsmUtil;
-import ru.fewizz.neid.asm.Name;
-import ru.fewizz.neid.asm.TransformerGroup;
+import ru.fewizz.neid.asm.*;
 
 public class TransformerGroupAnvilChunkLoader extends TransformerGroup {
 
